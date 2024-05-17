@@ -105,16 +105,20 @@ class StrumlineNote extends FlxSprite
   }
 
   public function playConfirm(hold:Bool = false):Void
-
-  public function playConfirm(hold:Bool = false):Void
   {
     this.active = true;
-    this.playAnimation('confirm', true);
 
-    // Run a timer before when we play the confirm animation.
-    // On opponent, this prevent issues with hold notes.
-    // On player, this allows holding the confirm key to fall back to press.
-    confirmHoldTimer = 0;
+    if (!hold)
+    {
+      this.playAnimation('confirm', true);
+
+      // Run a timer before when we play the confirm animation.
+      // On opponent, this prevent issues with hold notes.
+      // On player, this allows holding the confirm key to fall back to press.
+      confirmHoldTimer = 0;
+    }
+    else
+      holdConfirm();
   }
 
   public function isConfirm():Bool

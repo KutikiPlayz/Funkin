@@ -16,7 +16,7 @@ class StrumlineNote extends FlxSprite
 
   var confirmHoldTimer:Float = -1;
 
-  static final CONFIRM_HOLD_TIME:Float = 0.15;
+  static final CONFIRM_HOLD_TIME:Float = 0.1;
 
   function set_direction(value:NoteDirection):NoteDirection
   {
@@ -43,7 +43,16 @@ class StrumlineNote extends FlxSprite
 
   function onAnimationFrame(name:String, frameNumber:Int, frameIndex:Int):Void {}
 
-  function onAnimationFinished(name:String):Void {}
+  function onAnimationFinished(name:String):Void
+  {
+    // Run a timer before we stop playing the confirm animation.
+    // On opponent, this prevent issues with hold notes.
+    // On player, this allows holding the confirm key to fall back to press.
+    if (name == 'confirm')
+    {
+      confirmHoldTimer = 0;
+    }
+  }
 
   override function update(elapsed:Float)
   {
@@ -104,21 +113,10 @@ class StrumlineNote extends FlxSprite
     this.playAnimation('press', true);
   }
 
-  public function playConfirm(hold:Bool = false):Void
+  public function playConfirm():Void
   {
     this.active = true;
-
-    if (!hold)
-    {
-      this.playAnimation('confirm', true);
-
-      // Run a timer before when we play the confirm animation.
-      // On opponent, this prevent issues with hold notes.
-      // On player, this allows holding the confirm key to fall back to press.
-      confirmHoldTimer = 0;
-    }
-    else
-      holdConfirm();
+    this.playAnimation('confirm', true);
   }
 
   public function isConfirm():Bool

@@ -2518,7 +2518,7 @@ class PlayState extends MusicBeatSubState
       notesInDirection.remove(targetNote);
 
       // Play the strumline animation.
-      playerStrumline.playConfirm(targetNote.direction, targetNote.length > 0);
+      playerStrumline.playConfirm(input.noteDirection);
     }
     }
 
